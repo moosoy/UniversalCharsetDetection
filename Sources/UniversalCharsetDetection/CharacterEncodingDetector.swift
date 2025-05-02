@@ -97,7 +97,11 @@ public final class CharacterEncodingDetector {
       uchardet_data_end(uchardet)
       isFinished = true
 
-      let encodingIdentifier = String(cString: uchardet_get_charset(uchardet))
+      let cnds = uchardet_get_n_candidates(uchardet)
+      guard 0 < cnds, let enc = uchardet_get_encoding(uchardet, 0) else {
+         return nil
+      }
+      let encodingIdentifier = String(cString: enc)
       guard !encodingIdentifier.isEmpty else {
          return nil
       }
